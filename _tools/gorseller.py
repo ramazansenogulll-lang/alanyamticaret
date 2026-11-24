@@ -14,6 +14,7 @@ PHOTOS = {
     'vitrin.png': 'ipragaz-alanya-tup-bayi-vitrin',
     'su-bayii.png': 'alanya-su-bayii-aysu-madran-hayat-damacana',
     'ic-mekan.png': 'alanya-damacana-su-bayii-ic-mekan',
+    'hero.png': 'alanya-tup-ve-su-siparisi-mutfak',
 }
 WIDTHS = [480, 800, 1200]
 

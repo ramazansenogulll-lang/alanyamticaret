@@ -1,7 +1,7 @@
 /* Alanyam Ticaret — tüp ve su bayii, Alanya */
 :root{
   --sea:#0a6a8a; --sea-2:#0b84a8; --deep:#063246; --ink:#0f2530; --muted:#557080;
-  --sky:#e9f7fc; --foam:#f6fbfd; --sand:#fff4e6; --flame:#ff7a1a; --flame-2:#ff9b3d;
+  --sky:#e9f7fc; --foam:#f4fafd; --sand:#eef7fc; --flame:#0b84a8; --flame-2:#2aa3c9;
   --wa:#1fa855; --wa-2:#168a45; --line:#d7e7ee; --card:#ffffff;
   --r:18px; --r-sm:12px; --shadow:0 10px 30px -12px rgba(6,50,70,.28); --shadow-sm:0 4px 14px -6px rgba(6,50,70,.22);
   --wrap:1160px;
@@ -55,8 +55,8 @@ p{margin:0 0 1em}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:999px;font-weight:800;text-decoration:none;font-size:1rem;border:0;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s;line-height:1.1}
 .btn svg{width:20px;height:20px;flex:none}
 .btn:hover{transform:translateY(-1px)}
-.btn-call{background:var(--flame);color:#fff;box-shadow:0 10px 22px -10px rgba(255,122,26,.8)}
-.btn-call:hover{background:#f26a08}
+.btn-call{background:var(--sea);color:#fff;box-shadow:0 10px 22px -10px rgba(10,106,138,.8)}
+.btn-call:hover{background:var(--deep)}
 .btn-wa{background:var(--wa);color:#fff;box-shadow:0 10px 22px -10px rgba(31,168,85,.8)}
 .btn-wa:hover{background:var(--wa-2)}
 .btn-ghost{background:#fff;color:var(--sea);border:2px solid var(--sea)}
@@ -64,16 +64,16 @@ p{margin:0 0 1em}
 .btn-sm{padding:10px 16px;font-size:.92rem}
 
 /* hero */
-.hero{position:relative;overflow:hidden;background:linear-gradient(160deg,#e3f5fb 0%,#f5fbfd 45%,#fff4e6 100%)}
+.hero{position:relative;overflow:hidden;background:linear-gradient(160deg,#dff2fa 0%,#f3fafd 55%,#ffffff 100%)}
 .hero .wrap{display:grid;grid-template-columns:1.08fr .92fr;gap:36px;align-items:center;padding-top:56px;padding-bottom:92px;position:relative;z-index:2}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);color:var(--sea);font-weight:800;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;padding:7px 13px;border-radius:999px;margin-bottom:18px}
-.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--wa);box-shadow:0 0 0 4px rgba(31,168,85,.18)}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--sea-2);box-shadow:0 0 0 4px rgba(11,132,168,.18)}
 .hero h1 span{color:var(--sea)}
 .lead{font-size:1.14rem;color:#36515e;max-width:36em}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0 20px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
 .chips li{background:rgba(255,255,255,.85);border:1px solid var(--line);padding:7px 12px;border-radius:999px;font-size:.88rem;font-weight:700;color:#2b4754}
-.chips li::before{content:"✓";color:var(--wa);margin-right:6px;font-weight:900}
+.chips li::before{content:"✓";color:var(--sea-2);margin-right:6px;font-weight:900}
 .hero-art{position:relative}
 .hero-art .art{width:100%;max-width:520px;margin-left:auto;filter:drop-shadow(0 24px 30px rgba(6,50,70,.18))}
 .hero-badge{position:absolute;left:0;bottom:18px;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:12px 16px;display:flex;gap:12px;align-items:center;font-weight:700;font-size:.92rem}
@@ -86,7 +86,7 @@ p{margin:0 0 1em}
 .sec-sand{background:var(--sand)}
 .head{max-width:720px;margin:0 0 36px}
 .head.c{margin-left:auto;margin-right:auto;text-align:center}
-.kicker{display:inline-block;color:var(--flame);font-weight:800;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.kicker{display:inline-block;color:var(--sea-2);font-weight:800;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
 .head p{color:var(--muted);font-size:1.06rem}
 
 /* kartlar */
@@ -104,7 +104,7 @@ a.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .prod .pic{background:linear-gradient(180deg,var(--sky),#fff);height:190px;display:grid;place-items:center;padding:16px}
 .prod .pic svg{height:100%;width:auto}
 .prod .bd{padding:20px 22px 22px}
-.prod .tag{position:absolute;top:14px;left:14px;background:var(--flame);color:#fff;font-size:.74rem;font-weight:800;padding:5px 10px;border-radius:999px;letter-spacing:.03em}
+.prod .tag{position:absolute;top:14px;left:14px;background:var(--sea);color:#fff;font-size:.74rem;font-weight:800;padding:5px 10px;border-radius:999px;letter-spacing:.03em}
 .prod .more{display:inline-flex;margin-top:12px;font-weight:800;color:var(--sea)}
 .sizes{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .sizes span{background:var(--sky);color:var(--sea);font-weight:800;font-size:.8rem;padding:4px 10px;border-radius:999px}
@@ -118,10 +118,10 @@ a.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
 .ticks{list-style:none;padding:0;margin:0 0 1em}
 .ticks li{padding:8px 0 8px 34px;position:relative;border-bottom:1px dashed var(--line)}
-.ticks li::before{content:"";position:absolute;left:4px;top:13px;width:18px;height:18px;border-radius:50%;background:var(--wa) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/12px no-repeat}
+.ticks li::before{content:"";position:absolute;left:4px;top:13px;width:18px;height:18px;border-radius:50%;background:var(--sea-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/12px no-repeat}
 .panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:var(--shadow)}
-.warn{background:#fff7ef;border:1px solid #ffd9b8;border-radius:var(--r);padding:22px 24px}
-.warn h3{color:#b34d00}
+.warn{background:#eef7fc;border:1px solid #cfe6ef;border-left:5px solid var(--sea);border-radius:var(--r);padding:22px 24px}
+.warn h3{color:var(--deep)}
 
 /* marka şeridi */
 .brands{display:grid;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));gap:16px}
@@ -178,6 +178,28 @@ a.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .ftr .brand small{color:#8fbccc}
 .ftr .copy{border-top:1px solid rgba(255,255,255,.12);margin-top:34px;padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.84rem;color:#8fbccc}
 
+/* hero fotoğraflı */
+.hero-photo{background:var(--deep);min-height:620px;display:flex;align-items:center}
+.hero-photo .hero-bg{position:absolute;inset:0;z-index:0}
+.hero-photo .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:70% 40%}
+.hero-photo::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(6,50,70,.92) 0%,rgba(6,50,70,.78) 34%,rgba(6,50,70,.25) 58%,rgba(6,50,70,0) 75%)}
+.hero-photo .wrap{display:block;padding-top:70px;padding-bottom:70px;width:100%}
+.hero-photo .hero-text{max-width:560px;color:#fff}
+.hero-photo h1{color:#fff}.hero-photo h1 span{color:#8fdcf3}
+.hero-photo .lead{color:#d7eef6}
+.hero-photo .eyebrow{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff}
+.hero-photo .chips li{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff}
+.hero-photo .chips li::before{color:#8fdcf3}
+.hero-photo .crumbs,.hero-photo .crumbs a{color:#bfe3ef}
+.hero-photo .btn-call{background:#fff;color:var(--deep)}
+.hero-photo .btn-call:hover{background:#e9f7fc}
+
+/* yorumlar */
+.review{margin:0}
+.review .stars{color:var(--sea-2);letter-spacing:2px;font-size:1.05rem}
+.review blockquote{margin:10px 0 14px;color:#2b4754}
+.review figcaption{color:var(--muted);font-size:.92rem}
+
 /* fotoğraflar */
 .photo{margin:0;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);background:var(--sky)}
 .photo img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
@@ -185,6 +207,7 @@ a.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .split>div .photo{margin-top:22px}
 .split>div .photo img{aspect-ratio:16/11}
 .gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.gallery.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .gallery .photo{border-radius:18px;box-shadow:var(--shadow-sm)}
 .gallery .photo img{transition:transform .4s}
 .gallery .photo:hover img{transform:scale(1.04)}
@@ -198,7 +221,7 @@ a.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .answer{background:linear-gradient(135deg,#e9f7fc,#fff);border:1px solid var(--line);border-left:5px solid var(--sea);border-radius:16px;padding:20px 22px;margin-bottom:10px}
 .answer b{display:block;color:var(--sea);text-transform:uppercase;font-size:.8rem;letter-spacing:.08em;margin-bottom:6px}
 .answer p{margin:0;font-size:1.08rem;color:var(--ink)}
-.callout{background:var(--sand);border:1px solid #ffd9b8;border-radius:12px;padding:14px 16px;margin:1em 0}
+.callout{background:var(--sky);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:1em 0}
 .art-side{position:sticky;top:96px;display:grid;gap:16px}
 .art-side .panel{padding:22px}
 .toc{padding-left:1.1em;margin:0}
@@ -211,7 +234,7 @@ a.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .dock{display:none}
 
 @media (max-width:1000px){
-  .g4,.brands,.gallery{grid-template-columns:repeat(2,1fr)}
+  .g4,.brands,.gallery,.gallery.g3{grid-template-columns:repeat(2,1fr)}
   .ftr .cols{grid-template-columns:1fr 1fr}
 }
 @media (max-width:860px){
@@ -224,6 +247,11 @@ a.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
   .burger{display:block}
   .hero .wrap{grid-template-columns:1fr;padding-top:32px;padding-bottom:70px;gap:12px}
   .hero-art .art{max-width:330px;margin:0 auto}
+  .hero-photo{min-height:0;display:block}
+  .hero-photo .hero-bg{position:relative;height:300px}
+  .hero-photo .hero-bg img{object-position:75% 30%}
+  .hero-photo::after{display:none}
+  .hero-photo .wrap{padding-top:28px;padding-bottom:40px;background:var(--deep);position:relative;z-index:2}
   .hero-badge{left:4px;bottom:4px;font-size:.82rem;padding:9px 12px}
   .split,.order,.cta,.art-wrap{grid-template-columns:1fr}
   .art-side{position:static}

@@ -10,11 +10,11 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 import art  # noqa: E402
 from content import (BRAND, BRAND_COLORS, BRAND_NAME, DEFAULT_PRODUCT, GAS, KEYS, LANGS, NAME, P, PRODUCTS,  # noqa: E402
-                     REDIRECTS, SITE, SLUG, TEL_FIX, TEL_GSM, TEL_WA, UI, WA_NUM, intl)
+                     REDIRECTS, REVIEWS, SITE, SLUG, SODAS, TEL_FIX, TEL_GSM, TEL_WA, UI, WA_NUM, WATERS, intl)
 from articles import ARTICLES, DATE  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-VER = "20261124b"
+VER = "20261124c"
 I = art.ICONS
 e = html.escape
 OUT = []  # sitemap kayıtları: (url, alternates|None)
@@ -54,12 +54,20 @@ PHOTOS = {
         'tr': 'Alanya damacana su bayii iç mekânı, raflarda 19 litre damacanalar',
         'en': 'Inside the Alanya water shop: 19-litre jugs on the shelves',
         'ru': 'Магазин воды в Аланье: бутыли 19 л на полках'}),
+    'alanya-tup-ve-su-siparisi-mutfak': ((1448, 1086), {
+        'tr': 'Alanya’da evinde damacana su ve tüp kullanan gülümseyen kadın',
+        'en': 'Smiling woman in an Alanya kitchen with a water jug dispenser and a gas cylinder',
+        'ru': 'Улыбающаяся женщина на кухне в Аланье с кулером для воды и газовым баллоном'}),
 }
+GALLERY = ['alanyam-ticaret-ipragaz-tup-su-bayii-alanya', 'ipragaz-alanya-tup-bayi-vitrin',
+           'alanya-su-bayii-aysu-madran-hayat-damacana', 'alanya-damacana-su-bayii-ic-mekan']
+HERO_PHOTO = {'home': 'alanya-tup-ve-su-siparisi-mutfak'}
 PAGE_PHOTO = {'home': 'alanyam-ticaret-ipragaz-tup-su-bayii-alanya', 'gas': 'ipragaz-alanya-tup-bayi-vitrin',
               'water': 'alanya-su-bayii-aysu-madran-hayat-damacana', 'aysu': 'alanya-damacana-su-bayii-ic-mekan',
               'madran': 'alanya-damacana-su-bayii-ic-mekan', 'hayat': 'alanya-damacana-su-bayii-ic-mekan',
+              'kizilay': 'alanya-su-bayii-aysu-madran-hayat-damacana', 'beypazari': 'alanya-su-bayii-aysu-madran-hayat-damacana',
               'contact': 'alanyam-ticaret-ipragaz-tup-su-bayii-alanya'}
-OG_IMG = '/assets/img/alanyam-ticaret-ipragaz-tup-su-bayii-alanya-800.webp'
+OG_IMG = '/assets/img/alanya-tup-ve-su-siparisi-mutfak-1200.webp'
 
 
 def photo(name, lang, sizes, cls='photo', eager=False):
@@ -79,12 +87,26 @@ def gallery(lang, first=None):
     h = {'tr': ('Bizden görüntüler', 'Alanya’daki <span class="hl">tüp ve su bayimiz</span>'),
          'en': ('Photos', 'Our gas and water shop <span class="hl">in Alanya</span>'),
          'ru': ('Фото', 'Наш магазин газа и воды <span class="hl">в Аланье</span>')}[lang]
-    names = list(PHOTOS)
-    if first in names:
-        names.remove(first)
-        names.append(first)  # sayfanın kendi fotoğrafı yukarıda zaten var; galeride sona
+    names = [n for n in GALLERY if n != first]  # sayfada zaten olan fotoğraf tekrar gösterilmez
     figs = ''.join(photo(n, lang, '(max-width:520px) 100vw, (max-width:1000px) 50vw, 280px', 'photo g-item') for n in names)
-    return f'<section class="sec"><div class="wrap">{sec_head(h[0], h[1], center=True)}<div class="gallery">{figs}</div></div></section>'
+    return f'<section class="sec"><div class="wrap">{sec_head(h[0], h[1], center=True)}<div class="gallery g{len(names)}">{figs}</div></div></section>'
+
+
+def reviews(lang):
+    """Yalnız gerçek müşteri yorumları (content.REVIEWS). Liste boşsa bölüm çıkmaz."""
+    if not REVIEWS:
+        return ''
+    h = {'tr': ('Müşteri yorumları', 'Müşterilerimiz <span class="hl">ne diyor?</span>'),
+         'en': ('Reviews', 'What our <span class="hl">customers say</span>'),
+         'ru': ('Отзывы', 'Что говорят <span class="hl">наши клиенты</span>')}[lang]
+    note = {'tr': 'Yorumlar Türkçe orijinal hâliyle gösterilmektedir.', 'en': 'Reviews are shown in their original Turkish.', 'ru': 'Отзывы приведены на языке оригинала (турецкий).'}[lang]
+    cards = ''
+    for r in REVIEWS:
+        stars = '★' * int(r.get('puan', 5)) + '☆' * (5 - int(r.get('puan', 5)))
+        src = f' · {e(r["kaynak"])}' if r.get('kaynak') else ''
+        cards += f'<figure class="card review"><div class="stars" aria-label="{r.get("puan", 5)}/5">{stars}</div><blockquote>{e(r["metin"])}</blockquote><figcaption><b>{e(r["ad"])}</b>{src}</figcaption></figure>'
+    extra = '' if lang == 'tr' else f'<p class="note" style="text-align:center">{note}</p>'
+    return f'<section class="sec"><div class="wrap">{sec_head(h[0], h[1], center=True)}<div class="grid g3">{cards}</div>{extra}</div></section>'
 
 
 # ---------------- parçalar ----------------
@@ -151,7 +173,7 @@ def header(lang, active, alts):
     {a('home', u['nav_home'])}
     {a('gas', u['nav_gas'])}
     <div class="sub"><button aria-expanded="false">{u['nav_water']}</button><div class="menu">
-      {a('water', u['nav_all_water'])}{a('aysu', 'Aysu')}{a('madran', 'Madran')}{a('hayat', 'Hayat Su')}
+      {a('water', u['nav_all_water'])}{a('aysu', 'Aysu')}{a('madran', 'Madran')}{a('hayat', 'Hayat Su')}{a('kizilay', 'Kızılay Soda')}{a('beypazari', 'Beypazarı Soda')}
     </div></div>
     {blog}
     {a('contact', u['nav_contact'])}
@@ -162,7 +184,7 @@ def header(lang, active, alts):
 '''
 
 
-def hero(lang, pg, crumbs, art_svg):
+def hero(lang, pg, crumbs, art_svg, bg=None):
     u = UI[lang]
     chips = ''.join(f'<li>{e(c)}</li>' for c in pg['chips'])
     cr = ''
@@ -170,6 +192,25 @@ def hero(lang, pg, crumbs, art_svg):
         cr = '<nav class="crumbs" aria-label="breadcrumb">' + '<span>›</span>'.join(
             f'<a href="{h}">{e(t)}</a>' if h else f'<b>{e(t)}</b>' for t, h in crumbs) + '</nav>'
     b1, b2 = pg['badge']
+    if bg:
+        (w0, h0), alts = PHOTOS[bg]
+        ws = [w for w in (800, 1200, 1600) if w <= w0] or [w0]
+        av = ', '.join(f'/assets/img/{bg}-{w}.avif {w}w' for w in ws)
+        wb = ', '.join(f'/assets/img/{bg}-{w}.webp {w}w' for w in ws)
+        return f'''<section class="hero hero-photo"><picture class="hero-bg"><source type="image/avif" srcset="{av}" sizes="100vw"><source type="image/webp" srcset="{wb}" sizes="100vw"><img src="/assets/img/{bg}-1200.webp" width="1448" height="1086" alt="{e(alts[lang])}" fetchpriority="high" decoding="async"></picture><div class="wrap">
+  <div class="hero-text">
+    {cr}
+    <span class="eyebrow"><i></i>{e(pg['eyebrow'])}</span>
+    <h1>{pg['h1']}</h1>
+    <p class="lead">{e(pg['lead'])}</p>
+    <div class="actions">
+      <a class="btn btn-call btn-lg" href="{tel(TEL_GSM)}">{I['phone']} {TEL_GSM}</a>
+      <a class="btn btn-wa btn-lg" href="#siparis">{I['wa']} {u['wa_order']}</a>
+    </div>
+    <ul class="chips">{chips}</ul>
+  </div>
+</div></section>
+'''
     return f'''<section class="hero"><div class="wrap">
   <div class="hero-text">
     {cr}
@@ -201,20 +242,37 @@ def product_cards(lang, keys, extra=None):
             txt = strip(pg['lead'])
             sizes = ''
             tag = '7/24'
+        elif k in SODAS:
+            t, c = BRAND_COLORS[k]
+            pic = art.soda(BRAND_NAME[k], t, c)
+            name = BRAND_NAME[k] + (' Soda' if lang != 'ru' else '')
+            txt = BRAND[k][lang].split('. ')[0] + '.'
+            sizes = ''
+            tag = 'Soda'
         else:
             t, c = BRAND_COLORS[k]
             pic = art.jug(BRAND_NAME[k], t, c)
             name = 'Hayat Su' if k == 'hayat' else BRAND_NAME[k]
             txt = BRAND[k][lang].split('. ')[0] + '.'
-            sizes = '<div class="sizes">' + ''.join(f'<span>{x if lang == "tr" else x.replace(",", ".") if lang == "en" else x.replace("L", "л")}</span>' for x in BRAND[k]['sizes']) + '</div>'
+            sizes = '<div class="sizes">' + ''.join(f'<span>{szl(x, lang)}</span>' for x in BRAND[k]['sizes']) + '</div>'
             tag = '19 L' if lang != 'ru' else '19 л'
         cards.append(f'''<a class="card prod" href="{s[k]}"><span class="tag">{tag}</span><div class="pic">{pic}</div><div class="bd"><h3>{e(name)}</h3><p>{e(txt)}</p>{sizes}<span class="more">{u['more']}</span></div></a>''')
     if extra:
         ic, h, p = extra
         cards.append(f'''<a class="card" href="#siparis"><div class="ic">{I[ic]}</div><h3>{e(h)}</h3><p>{e(p)}</p><span class="more" style="display:inline-flex;margin-top:12px;font-weight:800">{u['order_btn']} →</span></a>''')
     n = len(cards)
-    g = 'g4' if n >= 4 else 'g3'
+    g = 'g3' if n % 3 == 0 else 'g4'
     return f'<div class="grid {g}">' + ''.join(cards) + '</div>'
+
+
+def szl(x, lang):
+    if x == 'Bardak':
+        return {'tr': 'Bardak su', 'en': 'Cup water', 'ru': 'Стаканчики'}[lang]
+    if lang == 'en':
+        return x.replace(',', '.')
+    if lang == 'ru':
+        return x.replace('L', 'л').replace('ml', 'мл')
+    return x
 
 
 def icon_cards(items, cols='g3'):
@@ -242,16 +300,19 @@ def brands_strip(lang, exclude=None):
     u = UI[lang]
     s = SLUG[lang]
     tiles = []
-    for k in ['gas', 'aysu', 'madran', 'hayat']:
+    for k in ['gas', 'aysu', 'madran', 'hayat', 'kizilay', 'beypazari']:
         if k == exclude:
             continue
         if k == 'gas':
             ic, nm = art.cylinder(GAS), GAS
+        elif k in SODAS:
+            t, c = BRAND_COLORS[k]
+            ic, nm = art.soda(BRAND_NAME[k], t, c), BRAND_NAME[k]
         else:
             t, c = BRAND_COLORS[k]
             ic, nm = art.jug(BRAND_NAME[k], t, c), ('Hayat Su' if k == 'hayat' else BRAND_NAME[k])
         tiles.append(f'<a class="brand-tile" href="{s[k]}">{ic}<span>{e(nm)}<small>{e(u["brands_sub"][k])}</small></span></a>')
-    cols = len(tiles)
+    cols = 3 if len(tiles) > 4 else len(tiles)
     return f'<section class="sec sec-alt"><div class="wrap">{sec_head(u["brands_k"], e(u["brands_h"]), center=True)}<div class="brands" style="--cols:{cols}">' + ''.join(tiles) + '</div></div></section>'
 
 
@@ -314,7 +375,7 @@ def footer(lang, alts):
 <footer class="ftr"><div class="wrap">
   <div class="cols">
     <div><a class="brand" href="{s['home']}">{art.logo()}<span><b>{NAME}</b><small>{u['tagline']}</small></span></a><p style="margin-top:14px">{e(u['f_about'])}</p></div>
-    <div><h4>{u['f_pages']}</h4><ul><li><a href="{s['home']}">{u['nav_home']}</a></li><li><a href="{s['gas']}">{u['nav_gas']}</a></li><li><a href="{s['water']}">{u['nav_water']}</a></li><li><a href="{s['aysu']}">Aysu</a></li><li><a href="{s['madran']}">Madran</a></li><li><a href="{s['hayat']}">Hayat Su</a></li>{blog}<li><a href="{s['contact']}">{u['nav_contact']}</a></li></ul></div>
+    <div><h4>{u['f_pages']}</h4><ul><li><a href="{s['home']}">{u['nav_home']}</a></li><li><a href="{s['gas']}">{u['nav_gas']}</a></li><li><a href="{s['water']}">{u['nav_water']}</a></li><li><a href="{s['aysu']}">Aysu</a></li><li><a href="{s['madran']}">Madran</a></li><li><a href="{s['hayat']}">Hayat Su</a></li><li><a href="{s['kizilay']}">Kızılay Soda</a></li><li><a href="{s['beypazari']}">Beypazarı Soda</a></li>{blog}<li><a href="{s['contact']}">{u['nav_contact']}</a></li></ul></div>
     <div><h4>{u['f_contact']}</h4><ul><li><a href="{tel(TEL_GSM)}">{TEL_GSM}</a> · {u['gsm']}</li><li><a href="{tel(TEL_FIX)}">{TEL_FIX}</a> · {u['fixed']}</li><li><a href="{wa_link(lang, WA_HELLO)}" target="_blank" rel="noopener">{TEL_WA}</a> · WhatsApp</li><li>{u['open']}</li><li>{u['city']}</li></ul></div>
     <div><h4>{u['f_lang']}</h4><ul>{langs}</ul></div>
   </div>
@@ -332,7 +393,7 @@ def org_schema(lang):
     return {
         '@context': 'https://schema.org', '@type': 'Store', '@id': SITE + '/#isletme', 'name': NAME,
         'description': UI[lang]['f_about'], 'url': SITE + '/', 'telephone': intl(TEL_GSM),
-        'image': [SITE + f'/assets/img/{n}-800.webp' for n in PHOTOS], 'logo': SITE + '/favicon.svg', 'priceRange': '₺',
+        'image': [SITE + f'/assets/img/{n}-800.webp' for n in GALLERY], 'logo': SITE + '/favicon.svg', 'priceRange': '₺',
         'address': {'@type': 'PostalAddress', 'addressLocality': 'Alanya', 'addressRegion': 'Antalya', 'addressCountry': 'TR'},
         'geo': {'@type': 'GeoCoordinates', 'latitude': 36.5444, 'longitude': 31.9954},
         'areaServed': {'@type': 'City', 'name': 'Alanya', 'sameAs': 'https://www.wikidata.org/wiki/Q212017'},
@@ -340,7 +401,7 @@ def org_schema(lang):
         'contactPoint': [{'@type': 'ContactPoint', 'telephone': intl(TEL_GSM), 'contactType': 'sales', 'availableLanguage': ['tr']},
                          {'@type': 'ContactPoint', 'telephone': intl(TEL_FIX), 'contactType': 'customer service'},
                          {'@type': 'ContactPoint', 'telephone': intl(TEL_WA), 'contactType': 'sales', 'contactOption': 'WhatsApp'}],
-        'brand': [{'@type': 'Brand', 'name': n} for n in [GAS, 'Aysu', 'Madran', 'Hayat']],
+        'brand': [{'@type': 'Brand', 'name': n} for n in [GAS, 'Aysu', 'Madran', 'Hayat', 'Kızılay', 'Beypazarı']],
         'foundingDate': '1983', 'knowsLanguage': ['tr'],
     }
 
@@ -374,7 +435,7 @@ def page(lang, key):
     s = SLUG[lang]
     alts = {l: SLUG[l][key] for l in LANGS}
     path = s[key]
-    crumbs = [] if key == 'home' else ([(u['crumb_home'], s['home'])] + ([(u['nav_water'], s['water'])] if key in ('aysu', 'madran', 'hayat') else []) + [(pg['crumb'], None)])
+    crumbs = [] if key == 'home' else ([(u['crumb_home'], s['home'])] + ([(u['nav_water'], s['water'])] if key in WATERS + SODAS else []) + [(pg['crumb'], None)])
     # sahne
     if pg['art'] == 'cyl':
         sv = art.scene('cyl', {'gas': GAS})
@@ -382,35 +443,38 @@ def page(lang, key):
         sv = art.scene('jug', {'brand': BRAND_NAME.get(key, 'Aysu')})
     elif pg['art'] == 'jugs':
         sv = art.scene('jugs')
+    elif pg['art'] == 'soda':
+        sv = art.scene('soda', {'brand': BRAND_NAME[key], 'colors': BRAND_COLORS[key]})
     else:
         sv = art.scene('mix', {'gas': GAS, 'brand': 'Aysu'})
     out = [head(lang, pg['title'], pg['desc'], path, alts,
                 [org_schema(lang), faq_schema(pg['faq'])] + ([crumb_schema([(t, h or path) for t, h in crumbs])] if crumbs else [])),
-           header(lang, key, alts), hero(lang, pg, crumbs, sv)]
+           header(lang, key, alts), hero(lang, pg, crumbs, sv, HERO_PHOTO.get(key))]
 
     # Ürün bölümü
     if key == 'home':
-        out.append(f'<section class="sec"><div class="wrap">{sec_head(pg["prod_k"], pg["prod_h"], pg["prod_p"])}{product_cards(lang, ["gas", "aysu", "madran", "hayat"])}</div></section>')
-    elif key == 'gas':
+        out.append(f'<section class="sec"><div class="wrap">{sec_head(pg["prod_k"], pg["prod_h"], pg["prod_p"])}{product_cards(lang, ["gas", "aysu", "madran", "hayat", "kizilay", "beypazari"])}</div></section>')
+    elif key == 'gas' or key in SODAS:
         out.append(f'<section class="sec"><div class="wrap">{sec_head(pg["prod_k"], pg["prod_h"], pg["prod_p"])}{icon_cards(pg["cards"])}</div></section>')
     elif key == 'water':
-        out.append(f'<section class="sec"><div class="wrap">{sec_head(pg["prod_k"], pg["prod_h"], pg["prod_p"])}{product_cards(lang, ["aysu", "madran", "hayat"], pg["extra_card"])}</div></section>')
-    elif key in ('aysu', 'madran', 'hayat'):
+        out.append(f'<section class="sec"><div class="wrap">{sec_head(pg["prod_k"], pg["prod_h"], pg["prod_p"])}{product_cards(lang, ["aysu", "madran", "hayat", "kizilay", "beypazari"], pg["extra_card"])}</div></section>')
+    elif key in WATERS:
         t, c = BRAND_COLORS[key]
         sizes = BRAND[key]['sizes']
         cards = []
         for i, sz in enumerate(sizes):
-            szl = sz if lang == 'tr' else sz.replace(',', '.') if lang == 'en' else sz.replace('L', 'л')
-            pic = art.jug(BRAND_NAME[key], t, c) if i == 0 else art.bottle(t, label=szl)
-            nm = {'tr': ['19 L damacana', '1,5 L şişe', '0,5 L şişe'], 'en': ['19 L jug', '1.5 L bottle', '0.5 L bottle'], 'ru': ['Бутыль 19 л', 'Бутылка 1,5 л', 'Бутылка 0,5 л']}[lang][i]
-            dd = {'tr': ['Ev ve işyeri için standart damacana. Pompa ya da sebille kullanılır.', 'Günlük kullanım, sofra ve dışarıda tüketim için.', 'Toplantı, davet ve özel günler için pratik boy.'],
-                  'en': ['The standard jug for homes and offices, used with a pump or dispenser.', 'For everyday use, the table and on the go.', 'Handy size for meetings, events and special occasions.'],
-                  'ru': ['Стандартная бутыль для дома и офиса — с помпой или кулером.', 'Для каждого дня, к столу и в дорогу.', 'Удобный объём для встреч, мероприятий и праздников.']}[lang][i]
+            lb = szl(sz, lang)
+            pic = art.jug(BRAND_NAME[key], t, c) if i == 0 else art.cup(BRAND_NAME[key], t) if sz == 'Bardak' else art.bottle(t, label=lb)
+            nm = {'tr': ['19 L damacana', '1,5 L pet şişe', '0,5 L pet şişe', 'Bardak su'], 'en': ['19 L jug', '1.5 L PET bottle', '0.5 L PET bottle', 'Cup water'], 'ru': ['Бутыль 19 л', 'Бутылка 1,5 л', 'Бутылка 0,5 л', 'Вода в стаканчиках']}[lang][i]
+            dd = {'tr': ['Ev ve işyeri için standart damacana. Pompa ya da sebille kullanılır.', 'Günlük kullanım, sofra ve dışarıda tüketim için.', 'Toplantı, davet ve özel günler için pratik boy.', 'Düğün, toplantı, ofis ve davetler için kapaklı bardak su.'],
+                  'en': ['The standard jug for homes and offices, used with a pump or dispenser.', 'For everyday use, the table and on the go.', 'Handy size for meetings, events and special occasions.', 'Sealed cup water for weddings, meetings, offices and events.'],
+                  'ru': ['Стандартная бутыль для дома и офиса — с помпой или кулером.', 'Для каждого дня, к столу и в дорогу.', 'Удобный объём для встреч, мероприятий и праздников.', 'Вода в запечатанных стаканчиках для свадеб, встреч, офисов и праздников.']}[lang][i]
             cards.append(f'<a class="card prod" href="#siparis"><div class="pic">{pic}</div><div class="bd"><h3>{BRAND_NAME[key]} · {e(nm)}</h3><p>{e(dd)}</p><span class="more">{u["order_btn"]} →</span></div></a>')
         if len(sizes) == 1:
             cards.append(f'<div class="card"><div class="ic">{I["chat"]}</div><h3>{e({"tr": "Şişe seçenekleri", "en": "Bottle sizes", "ru": "Бутылки меньшего объёма"}[lang])}</h3><p>{e(u["ask"])}: {TEL_GSM}</p></div>')
             cards.append(f'<div class="card"><div class="ic">{I["truck"]}</div><h3>{e(u["why"][1][1])}</h3><p>{e(u["why"][1][2])}</p></div>')
-        out.append(f'<section class="sec"><div class="wrap">{sec_head(pg["prod_k"], pg["prod_h"], pg["prod_p"])}<div class="grid g3">{"".join(cards)}</div></div></section>')
+        gcls = 'g4' if len(cards) == 4 else 'g3'
+        out.append(f'<section class="sec"><div class="wrap">{sec_head(pg["prod_k"], pg["prod_h"], pg["prod_p"])}<div class="grid {gcls}">{"".join(cards)}</div></div></section>')
     elif key == 'contact':
         cc = [('phone', TEL_GSM, u['gsm'], tel(TEL_GSM)), ('phone', TEL_FIX, u['fixed'], tel(TEL_FIX)), ('wa', TEL_WA, 'WhatsApp', wa_link(lang, WA_HELLO)),
               ('clock', u['open'], {'tr': 'Gece, hafta sonu, bayram', 'en': 'Nights, weekends, holidays', 'ru': 'Ночью, в выходные и праздники'}[lang], None),
@@ -445,12 +509,13 @@ def page(lang, key):
     if key in ('home', 'contact'):
         out.append(why(lang))
     out.append(order(lang, DEFAULT_PRODUCT[key]))
-    if key in ('aysu', 'madran', 'hayat'):
+    if key in WATERS + SODAS:
         out.append(brands_strip(lang, exclude=key))
     elif key in ('home', 'gas', 'water'):
         out.append(brands_strip(lang, exclude=key if key == 'gas' else None))
-    if lang == 'tr' and key in ('home', 'water', 'gas', 'aysu', 'madran', 'hayat'):
+    if lang == 'tr' and key != 'contact':
         out.append(blog_teaser(key))
+    out.append(reviews(lang))
     out.append(gallery(lang, first=ph))
     out.append(faq_block(lang, pg['faq']))
     out.append(cta(lang))
@@ -461,7 +526,7 @@ def page(lang, key):
 
 # ---------------- blog ----------------
 def art_card(a):
-    sv = {'cyl': art.cylinder(GAS), 'jug': art.jug('Su'), 'jugs': art.jug('Su', '#1f9d7a', '#127055')}[a['art']]
+    sv = {'cyl': art.cylinder(GAS), 'jug': art.jug('Su'), 'jugs': art.jug('Su', '#3a8fc4', '#1f6996')}[a['art']]
     return f'''<a class="card prod" href="/blog/{a['slug']}/"><span class="tag">{e(a['cat'])}</span><div class="pic">{sv}</div><div class="bd"><h3>{e(strip(a['h1']))}</h3><p>{e(a['desc'])}</p><span class="more">Devamını oku →</span></div></a>'''
 
 

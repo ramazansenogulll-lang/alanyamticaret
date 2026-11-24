@@ -20,12 +20,14 @@ def intl(n):
 
 
 LANGS = ['tr', 'en', 'ru']
-KEYS = ['home', 'gas', 'water', 'aysu', 'madran', 'hayat', 'contact']
+KEYS = ['home', 'gas', 'water', 'aysu', 'madran', 'hayat', 'kizilay', 'beypazari', 'contact']
+SODAS = ['kizilay', 'beypazari']
+WATERS = ['aysu', 'madran', 'hayat']
 
 SLUG = {
-    'tr': {'home': '/', 'gas': '/ipragaz/', 'water': '/su/', 'aysu': '/aysu/', 'madran': '/madran/', 'hayat': '/hayat-su/', 'contact': '/iletisim/'},
-    'en': {'home': '/en/', 'gas': '/en/ipragaz/', 'water': '/en/water/', 'aysu': '/en/aysu/', 'madran': '/en/madran/', 'hayat': '/en/hayat-su/', 'contact': '/en/contact/'},
-    'ru': {'home': '/ru/', 'gas': '/ru/ipragaz/', 'water': '/ru/voda/', 'aysu': '/ru/aysu/', 'madran': '/ru/madran/', 'hayat': '/ru/hayat-su/', 'contact': '/ru/kontakty/'},
+    'tr': {'home': '/', 'gas': '/ipragaz/', 'water': '/su/', 'aysu': '/aysu/', 'madran': '/madran/', 'hayat': '/hayat-su/', 'kizilay': '/kizilay-soda/', 'beypazari': '/beypazari-soda/', 'contact': '/iletisim/'},
+    'en': {'home': '/en/', 'gas': '/en/ipragaz/', 'water': '/en/water/', 'aysu': '/en/aysu/', 'madran': '/en/madran/', 'hayat': '/en/hayat-su/', 'kizilay': '/en/kizilay-soda/', 'beypazari': '/en/beypazari-soda/', 'contact': '/en/contact/'},
+    'ru': {'home': '/ru/', 'gas': '/ru/ipragaz/', 'water': '/ru/voda/', 'aysu': '/ru/aysu/', 'madran': '/ru/madran/', 'hayat': '/ru/hayat-su/', 'kizilay': '/ru/kizilay-soda/', 'beypazari': '/ru/beypazari-soda/', 'contact': '/ru/kontakty/'},
 }
 
 # Eski WordPress adresleri -> yeni adres
@@ -38,13 +40,16 @@ PRODUCTS = [
     ('aysu', 'Aysu 19 L damacana', {'en': 'Aysu 19 L water jug', 'ru': 'Aysu, бутыль 19 л'}),
     ('madran', 'Madran 19 L damacana', {'en': 'Madran 19 L water jug', 'ru': 'Madran, бутыль 19 л'}),
     ('hayat', 'Hayat 19 L damacana', {'en': 'Hayat 19 L water jug', 'ru': 'Hayat, бутыль 19 л'}),
-    ('b15', 'Şişe su 1,5 L', {'en': 'Bottled water 1.5 L', 'ru': 'Вода в бутылках 1,5 л'}),
-    ('b05', 'Şişe su 0,5 L', {'en': 'Bottled water 0.5 L', 'ru': 'Вода в бутылках 0,5 л'}),
+    ('b15', 'Aysu pet su 1,5 L', {'en': 'Aysu bottled water 1.5 L', 'ru': 'Aysu, бутылка 1,5 л'}),
+    ('b05', 'Aysu pet su 0,5 L', {'en': 'Aysu bottled water 0.5 L', 'ru': 'Aysu, бутылка 0,5 л'}),
+    ('cup', 'Aysu bardak su', {'en': 'Aysu cup water', 'ru': 'Aysu, вода в стаканчиках'}),
+    ('kizilay', 'Kızılay soda (maden suyu)', {'en': 'Kızılay mineral water (soda)', 'ru': 'Минеральная вода Kızılay (сода)'}),
+    ('beypazari', 'Beypazarı soda (maden suyu)', {'en': 'Beypazarı mineral water (soda)', 'ru': 'Минеральная вода Beypazarı (сода)'}),
 ]
-DEFAULT_PRODUCT = {'home': 'gas_home', 'gas': 'gas_home', 'water': 'aysu', 'aysu': 'aysu', 'madran': 'madran', 'hayat': 'hayat', 'contact': 'gas_home'}
+DEFAULT_PRODUCT = {'home': 'gas_home', 'gas': 'gas_home', 'water': 'aysu', 'aysu': 'aysu', 'madran': 'madran', 'hayat': 'hayat', 'kizilay': 'kizilay', 'beypazari': 'beypazari', 'contact': 'gas_home'}
 
-BRAND_COLORS = {'aysu': ('#0a84b8', '#0a6a8a'), 'madran': ('#1f9d7a', '#127055'), 'hayat': ('#2f6fd6', '#1d4fa3')}
-BRAND_NAME = {'aysu': 'Aysu', 'madran': 'Madran', 'hayat': 'Hayat'}
+BRAND_COLORS = {'aysu': ('#0a84b8', '#0a6a8a'), 'madran': ('#3a8fc4', '#1f6996'), 'hayat': ('#2f6fd6', '#1d4fa3'), 'kizilay': ('#4a9fd0', '#1f6a96'), 'beypazari': ('#1c7cc0', '#13588a')}
+BRAND_NAME = {'aysu': 'Aysu', 'madran': 'Madran', 'hayat': 'Hayat', 'kizilay': 'Kızılay', 'beypazari': 'Beypazarı'}
 
 UI = {
     'tr': {
@@ -61,9 +66,9 @@ UI = {
         'why_k': 'Neden Alanyam Ticaret?', 'why_h': 'Alanya’da güvenilir tüp ve su bayii',
         'why': [('clock', '7/24 hizmet', 'Gece gündüz, hafta sonu ve bayramlarda sipariş alıyoruz.'),
                 ('truck', 'Kapıya teslim', 'Ev ve işyerinize, Alanya genelinde teslimat.'),
-                ('shield', 'Kurumsal markalar', f'{GAS} tüp ile Aysu, Madran ve Hayat su; üretici güvencesiyle.'),
+                ('shield', 'Kurumsal markalar', f'{GAS} tüp; Aysu, Madran, Hayat su ve Kızılay, Beypazarı soda.'),
                 ('home', '1983’ten bugüne', 'Alanya’da yıllardır tüp ve su ihtiyacına çözüm.')],
-        'brands_k': 'Markalarımız', 'brands_h': 'Tüp ve su markalarımız', 'brands_sub': {'gas': 'Tüp gaz', 'aysu': 'Damacana su', 'madran': 'Damacana su', 'hayat': 'Damacana su'},
+        'brands_k': 'Markalarımız', 'brands_h': 'Tüp ve su markalarımız', 'brands_sub': {'gas': 'Tüp gaz', 'aysu': 'Damacana, pet, bardak', 'madran': 'Damacana su', 'hayat': 'Damacana su', 'kizilay': 'Maden suyu (soda)', 'beypazari': 'Maden suyu (soda)'},
         'order_k': 'WhatsApp sipariş', 'order_h': 'Formu doldurun, WhatsApp’tan gönderin',
         'order_p': 'Ürünü ve adresinizi yazın; mesajınız hazır olarak WhatsApp’ta açılır, siz yalnızca “Gönder”e basarsınız.',
         'order_ticks': ['Kayıt ya da üyelik yok', 'Mesaj doğrudan bayiye gider', 'Gece de sipariş verebilirsiniz'],
@@ -90,9 +95,9 @@ UI = {
         'why_k': 'Why Alanyam Ticaret?', 'why_h': 'A trusted gas and water dealer in Alanya',
         'why': [('clock', '24/7 service', 'We take orders day and night, on weekends and holidays.'),
                 ('truck', 'Door delivery', 'Delivered to homes and businesses across Alanya.'),
-                ('shield', 'Trusted brands', f'{GAS} gas plus Aysu, Madran and Hayat water, backed by their producers.'),
+                ('shield', 'Trusted brands', f'{GAS} gas; Aysu, Madran, Hayat water; Kızılay and Beypazarı soda.'),
                 ('home', 'Since 1983', 'Serving Alanya’s gas and water needs for decades.')],
-        'brands_k': 'Our brands', 'brands_h': 'Gas and water brands we deliver', 'brands_sub': {'gas': 'Bottled gas (LPG)', 'aysu': 'Water jug', 'madran': 'Water jug', 'hayat': 'Water jug'},
+        'brands_k': 'Our brands', 'brands_h': 'Gas and water brands we deliver', 'brands_sub': {'gas': 'Bottled gas (LPG)', 'aysu': 'Jugs, bottles, cups', 'madran': 'Water jug', 'hayat': 'Water jug', 'kizilay': 'Mineral water (soda)', 'beypazari': 'Mineral water (soda)'},
         'order_k': 'WhatsApp order', 'order_h': 'Fill in the form, send it on WhatsApp',
         'order_p': 'Choose the product and enter your address. Your message opens ready in WhatsApp, written in Turkish for the dealer — you just tap “Send”.',
         'order_ticks': ['No sign-up needed', 'Message goes straight to the dealer', 'Order even at night'],
@@ -119,9 +124,9 @@ UI = {
         'why_k': 'Почему Alanyam Ticaret?', 'why_h': 'Надёжный поставщик газа и воды в Аланье',
         'why': [('clock', 'Круглосуточно', 'Принимаем заказы днём и ночью, в выходные и праздники.'),
                 ('truck', 'Доставка до двери', 'Привозим в квартиры, дома и офисы по всей Аланье.'),
-                ('shield', 'Надёжные бренды', f'Газ {GAS} и вода Aysu, Madran, Hayat — с гарантией производителя.'),
+                ('shield', 'Надёжные бренды', f'Газ {GAS}; вода Aysu, Madran, Hayat; минеральная вода Kızılay и Beypazarı.'),
                 ('home', 'С 1983 года', 'Много лет обеспечиваем Аланью газом и водой.')],
-        'brands_k': 'Наши бренды', 'brands_h': 'Газ и вода, которые мы привозим', 'brands_sub': {'gas': 'Баллонный газ', 'aysu': 'Бутыль 19 л', 'madran': 'Бутыль 19 л', 'hayat': 'Бутыль 19 л'},
+        'brands_k': 'Наши бренды', 'brands_h': 'Газ и вода, которые мы привозим', 'brands_sub': {'gas': 'Баллонный газ', 'aysu': 'Бутыли, бутылки, стаканчики', 'madran': 'Бутыль 19 л', 'hayat': 'Бутыль 19 л', 'kizilay': 'Минеральная вода', 'beypazari': 'Минеральная вода'},
         'order_k': 'Заказ в WhatsApp', 'order_h': 'Заполните форму и отправьте в WhatsApp',
         'order_p': 'Выберите товар и укажите адрес. Сообщение откроется в WhatsApp уже готовым — на турецком языке, чтобы продавцу было понятно. Вам останется нажать «Отправить».',
         'order_ticks': ['Без регистрации', 'Сообщение сразу уходит продавцу', 'Можно заказать и ночью'],
@@ -139,10 +144,10 @@ UI = {
 # ---------- Marka metinleri ----------
 BRAND = {
     'aysu': {
-        'tr': 'Aysu, doğallığını Dedegöl Dağı eteklerindeki kaynağından alan bir doğal kaynak suyudur. Alanyam Ticaret’te Aysu’nun 19 litre damacanası ile 1,5 litre ve 0,5 litre şişeleri bulunur.',
-        'en': 'Aysu is a natural spring water sourced from the foothills of Mount Dedegöl. At Alanyam Ticaret you can order Aysu in 19-litre jugs as well as 1.5-litre and 0.5-litre bottles.',
-        'ru': 'Aysu — природная родниковая вода из источника у подножия горы Дедегёль. В Alanyam Ticaret можно заказать Aysu в бутылях 19 л, а также в бутылках 1,5 л и 0,5 л.',
-        'sizes': ['19 L', '1,5 L', '0,5 L'],
+        'tr': 'Aysu, doğallığını Dedegöl Dağı eteklerindeki kaynağından alan bir doğal kaynak suyudur. Alanyam Ticaret’te Aysu’nun 19 litre damacanası, 1,5 ve 0,5 litre pet şişeleri ve bardak suyu bulunur.',
+        'en': 'Aysu is a natural spring water sourced from the foothills of Mount Dedegöl. At Alanyam Ticaret you can order Aysu in 19-litre jugs, 1.5 and 0.5-litre PET bottles and cup water.',
+        'ru': 'Aysu — природная родниковая вода из источника у подножия горы Дедегёль. В Alanyam Ticaret можно заказать Aysu в бутылях 19 л, в бутылках 1,5 и 0,5 л, а также воду в стаканчиках.',
+        'sizes': ['19 L', '1,5 L', '0,5 L', 'Bardak'],
     },
     'madran': {
         'tr': 'Madran, Aydın’ın Bozdoğan ilçesindeki Madran Dağı yöresinin kaynaklarından gelen bir sudur. Alanyam Ticaret’te Madran’ın 19 litre damacanası ile 1,5 litre ve 0,5 litre şişeleri bulunur.',
@@ -158,26 +163,39 @@ BRAND = {
     },
 }
 
+BRAND['kizilay'] = {
+    'tr': 'Kızılay Maden Suyu’nun hikâyesi, Atatürk’ün 1926’da Afyonkarahisar Gazlıgöl’deki kaynağı Türk Kızılay’a bağışlamasıyla başlar. Alanyam Ticaret, Kızılay maden suyunu (soda) Alanya’da kapınıza getirir; çeşit ve koli seçenekleri için telefonda bilgi alabilirsiniz.',
+    'en': 'The story of Kızılay mineral water began in 1926, when Atatürk donated the Gazlıgöl spring in Afyonkarahisar to the Turkish Red Crescent (Kızılay). Alanyam Ticaret delivers Kızılay mineral water (soda) in Alanya; ask us by phone about varieties and cases.',
+    'ru': 'История минеральной воды Kızılay началась в 1926 году, когда Ататюрк передал источник Газлыгёль в Афьонкарахисаре Турецкому Красному Полумесяцу (Kızılay). Alanyam Ticaret доставляет минеральную воду Kızılay (соду) по Аланье; о видах и упаковках спрашивайте по телефону.',
+    'sizes': ['200 ml'],
+}
+BRAND['beypazari'] = {
+    'tr': 'Beypazarı maden suyu, adını aldığı Ankara’nın Beypazarı ilçesinden gelen bir doğal mineralli sudur. Alanyam Ticaret, Beypazarı sodayı Alanya’da kapınıza getirir; çeşit ve koli seçenekleri için telefonda bilgi alabilirsiniz.',
+    'en': 'Beypazarı is a natural mineral water from the Beypazarı district of Ankara, which gives it its name. Alanyam Ticaret delivers Beypazarı soda in Alanya; ask us by phone about varieties and cases.',
+    'ru': 'Beypazarı — природная минеральная вода из района Бейпазары (Анкара), давшего ей название. Alanyam Ticaret доставляет соду Beypazarı по Аланье; о видах и упаковках спрашивайте по телефону.',
+    'sizes': [],
+}
+
 # ---------- Sayfalar ----------
 P = {'tr': {}, 'en': {}, 'ru': {}}
 
 # ===== TÜRKÇE =====
 P['tr']['home'] = dict(
     title='Alanya Tüp ve Su Bayii | İpragaz Tüp, Damacana Su 7/24 | Alanyam Ticaret',
-    desc=f'Alanya’da İpragaz tüp ile Aysu, Madran ve Hayat damacana su siparişi. 7/24 kapınıza teslim. Telefon veya WhatsApp: {TEL_GSM}',
+    desc=f'Alanya’da İpragaz tüp, Aysu, Madran, Hayat damacana su ve Kızılay, Beypazarı soda siparişi. 7/24 kapınıza teslim. Telefon/WhatsApp: {TEL_GSM}',
     crumb='Ana Sayfa', eyebrow='Alanya · 7/24 tüp ve su',
     h1='Alanya’da tüp ve damacana su <span>kapınıza kadar</span>',
-    lead='Alanyam Ticaret olarak İpragaz tüp ile Aysu, Madran ve Hayat damacana su siparişlerinizi gece gündüz evinize ve işyerinize getiriyoruz. Bir telefon ya da WhatsApp mesajı yeterli.',
+    lead='Alanyam Ticaret olarak İpragaz tüp, Aysu, Madran ve Hayat damacana su, Aysu pet ve bardak su ile Kızılay ve Beypazarı soda siparişlerinizi gece gündüz evinize ve işyerinize getiriyoruz.',
     chips=['7/24 sipariş', 'Ev ve işyerine teslim', 'WhatsApp’tan sipariş'], badge=('7/24', 'Gece gündüz sipariş'), art='mix',
     prod_k='Ürünlerimiz', prod_h='Tüp ve su, <span class="hl">tek numaradan</span>',
     prod_p='Mutfak tüpünüz ya da damacana suyunuz bittiğinde aramanız yeterli. Ürünü seçin, adresinizi söyleyin, kapınıza getirelim.',
     info_k='Hakkımızda', info_h='Alanya’nın tüp ve su bayii',
     info_p=['Alanyam Ticaret, Alanya’da ev ve işyerlerine tüp gaz ve damacana su dağıtan yerel bir bayidir. 1983’ten bugüne Alanya’da hizmet veriyoruz.',
-            'Tüp siparişinde İpragaz, suda ise Aysu, Madran ve Hayat markalarıyla çalışıyoruz. Düğün, toplantı ve davetler gibi özel günler için şişe su siparişi de alıyoruz.'],
-    info_ticks=['İpragaz tüp bayisi', 'Aysu, Madran ve Hayat 19 L damacana', '0,5 L ve 1,5 L şişe su', 'Özel günler için toplu su siparişi'],
+            'Tüpte İpragaz; suda Aysu, Madran ve Hayat; sodada Kızılay ve Beypazarı ile çalışıyoruz. Düğün, toplantı ve davetler için Aysu pet ve bardak su siparişi de alıyoruz.'],
+    info_ticks=['İpragaz tüp bayisi', 'Aysu, Madran ve Hayat 19 L damacana', 'Aysu pet su (0,5 L, 1,5 L) ve bardak su', 'Kızılay ve Beypazarı soda', 'Özel günler için toplu su siparişi'],
     faq=[('Alanya’da gece tüp siparişi verebilir miyim?', f'Evet. Alanyam Ticaret 7/24 sipariş alır. Gece de {TEL_GSM} numarasını arayabilir ya da WhatsApp’tan yazabilirsiniz.'),
          ('WhatsApp’tan nasıl sipariş veririm?', f'Sayfadaki sipariş formunda ürünü, adedi ve adresinizi yazıp “WhatsApp ile gönder”e basın. Mesaj hazır olarak {TEL_WA} numarasına açılır; siz yalnızca gönderirsiniz.'),
-         ('Hangi su markalarını getiriyorsunuz?', 'Aysu, Madran ve Hayat Su 19 litre damacanalarını, ayrıca 0,5 ve 1,5 litre şişe suyu getiriyoruz.'),
+         ('Hangi su ve soda markalarını getiriyorsunuz?', 'Aysu, Madran ve Hayat 19 litre damacana; Aysu pet su (0,5 ve 1,5 litre) ve bardak su; Kızılay ve Beypazarı soda getiriyoruz.'),
          ('Alanya’nın hangi bölgelerine teslimat yapıyorsunuz?', 'Alanya genelinde ev ve işyerlerine teslimat yapıyoruz. Bulunduğunuz mahalleyi sipariş sırasında söylemeniz yeterli; teslim süresini telefonda netleştiririz.'),
          ('Güncel fiyatları nereden öğrenebilirim?', 'Tüp ve su fiyatları dönemsel olarak değiştiği için güncel fiyatı telefonda ya da WhatsApp’tan sorabilirsiniz.')],
 )
@@ -210,15 +228,15 @@ P['tr']['gas'] = dict(
          ('Gaz kokusu alırsam ne yapmalıyım?', 'Elektrik düğmelerine dokunmadan tüp vanasını kapatın, ortamı havalandırın ve gerekirse 112’yi arayın. Tüp ya da bağlantıyla ilgili sorularınız için bizi arayabilirsiniz.')],
 )
 P['tr']['water'] = dict(
-    title='Alanya Damacana Su Siparişi | Aysu, Madran, Hayat | Alanyam Ticaret',
-    desc=f'Alanya’da Aysu, Madran ve Hayat damacana su ile 0,5 L ve 1,5 L şişe su siparişi. 7/24 kapınıza teslim, WhatsApp’tan sipariş: {TEL_WA}',
+    title='Alanya Su ve Soda Siparişi | Aysu, Madran, Hayat, Kızılay, Beypazarı | Alanyam Ticaret',
+    desc=f'Alanya’da Aysu, Madran, Hayat damacana su; Aysu pet ve bardak su; Kızılay ve Beypazarı soda siparişi. 7/24 kapınıza teslim. WhatsApp: {TEL_WA}',
     crumb='Su', eyebrow='Alanya · damacana su',
-    h1='Alanya damacana su: <span>Aysu, Madran, Hayat</span>',
-    lead='Damak tadınıza uygun suyu seçin, kapınıza getirelim. Alanyam Ticaret, Alanya’da 19 litre damacana ve şişe su siparişlerinizi 7/24 teslim eder.',
-    chips=['3 marka seçeneği', '19 L damacana', '0,5 L ve 1,5 L şişe su'], badge=('3', 'su markası'), art='jugs',
+    h1='Alanya su ve soda: <span>Aysu, Madran, Hayat, Kızılay, Beypazarı</span>',
+    lead='Damak tadınıza uygun suyu seçin, kapınıza getirelim. Alanyam Ticaret, Alanya’da 19 litre damacana, Aysu pet ve bardak su ile Kızılay ve Beypazarı soda siparişlerinizi 7/24 teslim eder.',
+    chips=['19 L damacana', 'Aysu pet ve bardak su', 'Kızılay ve Beypazarı soda'], badge=('5', 'marka'), art='jugs',
     prod_k='Su markalarımız', prod_h='Hangi suyu <span class="hl">tercih edersiniz?</span>',
     prod_p='Her markanın kendi sayfasında seçenekleri ve sipariş bilgisini bulabilirsiniz.',
-    extra_card=('party', 'Şişe su ve özel günler', '0,5 L ve 1,5 L şişe su; düğün, toplantı ve davetler için toplu su siparişi.'),
+    extra_card=('party', 'Aysu pet ve bardak su', 'Aysu 0,5 L ve 1,5 L pet su ile bardak su; düğün, toplantı ve davetler için toplu sipariş.'),
     info_k='Pratik bilgi', info_h='Damacana su nasıl saklanır?',
     info_p=['Damacana suyun tadını ve tazeliğini korumak için birkaç basit kurala dikkat etmek yeterli.'],
     info_ticks=['Damacanayı doğrudan güneş almayan, serin ve temiz bir yerde saklayın.', 'Açtığınız damacanayı kısa sürede tüketin.',
@@ -271,14 +289,14 @@ P['en']['home'] = dict(
     desc=f'Order İpragaz gas cylinders and Aysu, Madran, Hayat water jugs in Alanya. Delivered to your door 24/7. Call or WhatsApp: {TEL_GSM}',
     crumb='Home', eyebrow='Alanya · gas & water 24/7',
     h1='Gas cylinders and drinking water in Alanya, <span>delivered to your door</span>',
-    lead='Alanyam Ticaret delivers İpragaz gas cylinders and Aysu, Madran and Hayat 19-litre water jugs to homes and businesses in Alanya, day and night. One call or WhatsApp message is all it takes.',
+    lead='Alanyam Ticaret delivers İpragaz gas cylinders, Aysu, Madran and Hayat 19-litre water jugs, Aysu bottled and cup water, and Kızılay and Beypazarı mineral water to homes and businesses in Alanya, day and night.',
     chips=['Orders 24/7', 'Homes & businesses', 'Order on WhatsApp'], badge=('24/7', 'Day & night orders'), art='mix',
     prod_k='Our products', prod_h='Gas and water, <span class="hl">one number</span>',
     prod_p='When your kitchen gas or drinking water runs out, just call. Choose the product, give us your address, and we’ll bring it to your door.',
     info_k='About us', info_h='Alanya’s gas and water dealer',
     info_p=['Alanyam Ticaret is a local dealer delivering bottled gas and drinking water to homes and businesses in Alanya. We have been serving Alanya since 1983.',
             'For gas we work with İpragaz; for water with Aysu, Madran and Hayat. We also take bulk bottled-water orders for weddings, meetings and special events.'],
-    info_ticks=['İpragaz gas cylinder dealer', 'Aysu, Madran and Hayat 19 L jugs', '0.5 L and 1.5 L bottled water', 'Bulk water for events'],
+    info_ticks=['İpragaz gas cylinder dealer', 'Aysu, Madran and Hayat 19 L jugs', 'Aysu bottled (0.5 L, 1.5 L) and cup water', 'Kızılay and Beypazarı mineral water', 'Bulk water for events'],
     faq=[('Can I order a gas cylinder at night in Alanya?', f'Yes. Alanyam Ticaret takes orders 24/7. Call {TEL_GSM} or send a WhatsApp message any time.'),
          ('How do I order on WhatsApp?', f'Fill in the order form on this page and tap “Send via WhatsApp”. The message opens ready (in Turkish) to {TEL_WA}; you just send it.'),
          ('Do you speak English?', 'The easiest way is to order with the WhatsApp form: it writes your order in Turkish for the dealer, so there is no language barrier.'),
@@ -314,15 +332,15 @@ P['en']['gas'] = dict(
          ('What should I do if I smell gas?', 'Don’t touch electrical switches; close the cylinder valve, ventilate the room and call 112 if needed.')],
 )
 P['en']['water'] = dict(
-    title='Water Jug Delivery in Alanya | Aysu, Madran, Hayat | Alanyam Ticaret',
+    title='Water & Soda Delivery in Alanya | Aysu, Madran, Hayat, Kızılay, Beypazarı | Alanyam Ticaret',
     desc=f'Order Aysu, Madran and Hayat 19 L water jugs and 0.5 L / 1.5 L bottled water in Alanya. Delivered 24/7. WhatsApp: {TEL_WA}',
     crumb='Water', eyebrow='Alanya · drinking water',
-    h1='Drinking water in Alanya: <span>Aysu, Madran, Hayat</span>',
+    h1='Water and soda in Alanya: <span>Aysu, Madran, Hayat, Kızılay, Beypazarı</span>',
     lead='Choose the water you like and we’ll bring it to your door. Alanyam Ticaret delivers 19-litre jugs and bottled water across Alanya, 24/7.',
-    chips=['3 brands', '19 L jugs', '0.5 L & 1.5 L bottles'], badge=('3', 'water brands'), art='jugs',
+    chips=['19 L jugs', 'Aysu bottles & cups', 'Kızılay & Beypazarı soda'], badge=('5', 'brands'), art='jugs',
     prod_k='Our water brands', prod_h='Which water <span class="hl">do you prefer?</span>',
     prod_p='Each brand has its own page with sizes and ordering details.',
-    extra_card=('party', 'Bottled water & events', '0.5 L and 1.5 L bottles; bulk orders for weddings, meetings and parties.'),
+    extra_card=('party', 'Aysu bottles & cup water', 'Aysu 0.5 L and 1.5 L PET bottles and cup water; bulk orders for weddings, meetings and parties.'),
     info_k='Good to know', info_h='How to store a water jug',
     info_p=['A few simple habits keep your water fresh and tasting good.'],
     info_ticks=['Store the jug in a cool, clean place out of direct sunlight.', 'Finish an opened jug within a short time.',
@@ -375,14 +393,14 @@ P['ru']['home'] = dict(
     desc=f'Газовые баллоны İpragaz и вода Aysu, Madran, Hayat в бутылях 19 л с доставкой по Аланье круглосуточно. Звоните или пишите в WhatsApp: {TEL_GSM}',
     crumb='Главная', eyebrow='Аланья · газ и вода 24/7',
     h1='Газ и питьевая вода в Аланье <span>с доставкой до двери</span>',
-    lead='Alanyam Ticaret привозит газовые баллоны İpragaz и воду Aysu, Madran и Hayat в бутылях 19 л в квартиры, дома и офисы Аланьи — днём и ночью. Достаточно одного звонка или сообщения в WhatsApp.',
+    lead='Alanyam Ticaret привозит газовые баллоны İpragaz, воду Aysu, Madran и Hayat в бутылях 19 л, воду Aysu в бутылках и стаканчиках, а также минеральную воду Kızılay и Beypazarı — в квартиры, дома и офисы Аланьи, днём и ночью.',
     chips=['Заказ 24/7', 'Дома и офисы', 'Заказ в WhatsApp'], badge=('24/7', 'Заказы днём и ночью'), art='mix',
     prod_k='Наши товары', prod_h='Газ и вода <span class="hl">по одному номеру</span>',
     prod_p='Закончился газ на кухне или питьевая вода? Просто позвоните: выберите товар, назовите адрес — и мы привезём заказ к вашей двери.',
     info_k='О нас', info_h='Газ и вода в Аланье',
     info_p=['Alanyam Ticaret — местный поставщик баллонного газа и питьевой воды для домов и офисов в Аланье. Мы работаем в Аланье с 1983 года.',
             'Газ — İpragaz, вода — Aysu, Madran и Hayat. Также принимаем оптовые заказы воды в бутылках на свадьбы, встречи и праздники.'],
-    info_ticks=['Газовые баллоны İpragaz', 'Вода Aysu, Madran и Hayat, бутыли 19 л', 'Вода в бутылках 0,5 л и 1,5 л', 'Оптовые заказы на мероприятия'],
+    info_ticks=['Газовые баллоны İpragaz', 'Вода Aysu, Madran и Hayat, бутыли 19 л', 'Aysu в бутылках (0,5 и 1,5 л) и стаканчиках', 'Минеральная вода Kızılay и Beypazarı', 'Оптовые заказы на мероприятия'],
     faq=[('Можно ли заказать газовый баллон ночью?', f'Да. Alanyam Ticaret принимает заказы круглосуточно. Звоните по номеру {TEL_GSM} или пишите в WhatsApp в любое время.'),
          ('Как заказать через WhatsApp?', f'Заполните форму заказа на этой странице и нажмите «Отправить в WhatsApp». Сообщение откроется готовым (на турецком) для номера {TEL_WA} — вам останется его отправить.'),
          ('Вы говорите по-русски?', 'Проще всего заказать через форму WhatsApp: она сама составит заказ на турецком языке для продавца, поэтому языковой барьер не помешает.'),
@@ -418,15 +436,15 @@ P['ru']['gas'] = dict(
          ('Что делать, если пахнет газом?', 'Не трогайте электрические выключатели, закройте вентиль баллона, проветрите помещение и при необходимости звоните 112.')],
 )
 P['ru']['water'] = dict(
-    title='Доставка воды в Аланье | Aysu, Madran, Hayat 19 л | Alanyam Ticaret',
+    title='Доставка воды и соды в Аланье | Aysu, Madran, Hayat, Kızılay, Beypazarı | Alanyam Ticaret',
     desc=f'Вода Aysu, Madran и Hayat в бутылях 19 л и в бутылках 0,5 / 1,5 л с доставкой по Аланье 24/7. WhatsApp: {TEL_WA}',
     crumb='Вода', eyebrow='Аланья · питьевая вода',
-    h1='Питьевая вода в Аланье: <span>Aysu, Madran, Hayat</span>',
+    h1='Вода и сода в Аланье: <span>Aysu, Madran, Hayat, Kızılay, Beypazarı</span>',
     lead='Выберите воду по вкусу — мы привезём её к двери. Alanyam Ticaret доставляет бутыли 19 л и воду в бутылках по всей Аланье круглосуточно.',
-    chips=['3 бренда', 'Бутыли 19 л', 'Бутылки 0,5 и 1,5 л'], badge=('3', 'бренда воды'), art='jugs',
+    chips=['Бутыли 19 л', 'Aysu в бутылках и стаканчиках', 'Сода Kızılay и Beypazarı'], badge=('5', 'брендов'), art='jugs',
     prod_k='Наша вода', prod_h='Какую воду <span class="hl">вы предпочитаете?</span>',
     prod_p='На странице каждого бренда — варианты объёма и информация о заказе.',
-    extra_card=('party', 'Вода в бутылках и праздники', 'Бутылки 0,5 и 1,5 л; оптовые заказы на свадьбы, встречи и праздники.'),
+    extra_card=('party', 'Aysu в бутылках и стаканчиках', 'Бутылки Aysu 0,5 и 1,5 л и вода в стаканчиках; оптом на свадьбы, встречи и праздники.'),
     info_k='Полезно знать', info_h='Как хранить бутыль с водой',
     info_p=['Несколько простых правил помогут сохранить свежесть и вкус воды.'],
     info_ticks=['Храните бутыль в прохладном чистом месте, без прямого солнца.', 'Открытую бутыль старайтесь выпить в короткий срок.',
@@ -473,6 +491,74 @@ P['ru']['contact'] = dict(
          ('Куда вы доставляете?', 'Доставляем газ и воду в дома и офисы по всей Аланье.')],
 )
 
+
+
+def _soda(lang, k):
+    n = BRAND_NAME[k]
+    T = {
+        'tr': dict(
+            title=f'Alanya {n} Soda (Maden Suyu) Siparişi | 7/24 | Alanyam Ticaret',
+            desc=f'Alanya’da {n} maden suyu (soda) siparişi. Ev, işyeri ve restoranlara 7/24 kapıya teslim; telefon veya WhatsApp ile sipariş verin.',
+            crumb=f'{n} Soda', eyebrow=f'Alanya · {n} soda',
+            h1=f'Alanya {n} soda, <span>kapınıza</span>',
+            lead=f'{n} maden suyunu Alanya’da evinize, işyerinize ve restoranınıza getiriyoruz. Su ya da tüp siparişinizle birlikte de isteyebilirsiniz.',
+            chips=[f'{n} maden suyu', '7/24 sipariş', 'Su ve tüple birlikte'], badge=('Soda', 'maden suyu'),
+            prod_k='Sipariş', prod_h=f'{n} <span class="hl">soda siparişi</span>',
+            prod_p='Kaç adet ya da koli istediğinizi söyleyin, siparişinizi adresinize getirelim.',
+            cards=[('drop', f'{n} soda', f'{n} maden suyunu tek tek ya da toplu sipariş edebilirsiniz; çeşitleri telefonda sorun.'),
+                   ('party', 'İşyeri ve davetler', 'Restoran, kafe, ofis ve davetler için toplu soda siparişi; miktarı telefonda bildirin.'),
+                   ('truck', '7/24 kapıya teslim', 'Alanya genelinde ev ve işyerinize gece gündüz teslimat.')],
+            info_k='Marka', info_h=f'{n} hakkında', info_p=[BRAND[k]['tr']],
+            info_ticks=[f'Alanya {n} soda siparişi', 'Su ve tüp siparişiyle birlikte', '7/24 telefon ve WhatsApp'],
+            faq=[(f'Alanya’da {n} soda siparişi nasıl verilir?', f'{TEL_GSM} numarasını arayın ya da sayfadaki formdan WhatsApp’la sipariş verin. Adet ve adres yeterli.'),
+                 ('Soda ile maden suyu aynı şey mi?', 'Evet. Günlük dilde “soda” denilen ürün doğal mineralli sudur, yani maden suyudur.'),
+                 ('Su siparişimle birlikte soda isteyebilir miyim?', 'Evet; damacana su, pet su ya da tüp siparişinizin yanına soda da ekleyebilirsiniz.'),
+                 (f'{n} sodayı gece de getiriyor musunuz?', 'Evet, 7/24 sipariş alıyoruz.')]),
+        'en': dict(
+            title=f'{n} Mineral Water (Soda) Delivery in Alanya 24/7 | Alanyam Ticaret',
+            desc=f'Order {n} mineral water (soda) in Alanya. Delivered 24/7 to homes, offices and restaurants; order by phone or WhatsApp.',
+            crumb=f'{n} Soda', eyebrow=f'Alanya · {n} soda',
+            h1=f'{n} mineral water in Alanya, <span>to your door</span>',
+            lead=f'We deliver {n} mineral water to homes, offices and restaurants in Alanya. Add it to your water or gas order.',
+            chips=[f'{n} mineral water', 'Orders 24/7', 'With water & gas'], badge=('Soda', 'mineral water'),
+            prod_k='Ordering', prod_h=f'Order <span class="hl">{n} soda</span>',
+            prod_p='Tell us how many bottles or cases you need and we’ll bring them to your address.',
+            cards=[('drop', f'{n} soda', f'Order {n} mineral water by the bottle or in bulk; ask us about varieties by phone.'),
+                   ('party', 'Businesses & events', 'Bulk soda for restaurants, cafés, offices and events; tell us the quantity by phone.'),
+                   ('truck', '24/7 door delivery', 'Delivery to homes and businesses across Alanya, day and night.')],
+            info_k='Brand', info_h=f'About {n}', info_p=[BRAND[k]['en']],
+            info_ticks=[f'{n} soda delivery in Alanya', 'Together with water and gas', '24/7 phone and WhatsApp'],
+            faq=[(f'How do I order {n} soda in Alanya?', f'Call {TEL_GSM} or use the WhatsApp form on this page. Quantity and address are enough.'),
+                 ('Is “soda” the same as mineral water?', 'Yes. In Türkiye, “soda” usually means natural sparkling mineral water.'),
+                 ('Can I add soda to my water order?', 'Yes, add soda to your jug, bottled water or gas order.'),
+                 (f'Do you deliver {n} at night?', 'Yes, we take orders 24/7.')]),
+        'ru': dict(
+            title=f'Минеральная вода {n} (сода) в Аланье 24/7 | Alanyam Ticaret',
+            desc=f'Минеральная вода {n} (сода) с доставкой по Аланье круглосуточно — в дома, офисы и рестораны. Заказ по телефону или в WhatsApp.',
+            crumb=f'{n}', eyebrow=f'Аланья · сода {n}',
+            h1=f'Минеральная вода {n} в Аланье <span>с доставкой</span>',
+            lead=f'Привозим минеральную воду {n} в дома, офисы и рестораны Аланьи. Можно добавить к заказу воды или газа.',
+            chips=[f'Минеральная вода {n}', 'Заказ 24/7', 'Вместе с водой и газом'], badge=('Soda', 'минеральная вода'),
+            prod_k='Заказ', prod_h=f'Заказать <span class="hl">{n}</span>',
+            prod_p='Скажите, сколько бутылок или упаковок нужно, — и мы привезём заказ по вашему адресу.',
+            cards=[('drop', f'Сода {n}', f'Минеральную воду {n} можно заказать поштучно или оптом; о видах спрашивайте по телефону.'),
+                   ('party', 'Бизнес и мероприятия', 'Оптом для ресторанов, кафе, офисов и праздников — количество уточните по телефону.'),
+                   ('truck', 'Доставка 24/7', 'Привозим в дома и офисы по всей Аланье днём и ночью.')],
+            info_k='Бренд', info_h=f'О воде {n}', info_p=[BRAND[k]['ru']],
+            info_ticks=[f'Доставка {n} по Аланье', 'Вместе с водой и газом', 'Телефон и WhatsApp 24/7'],
+            faq=[(f'Как заказать {n} в Аланье?', f'Позвоните по номеру {TEL_GSM} или воспользуйтесь формой WhatsApp на этой странице. Достаточно количества и адреса.'),
+                 ('«Сода» — это минеральная вода?', 'Да. В Турции «содой» обычно называют природную газированную минеральную воду.'),
+                 ('Можно добавить соду к заказу воды?', 'Да, соду можно добавить к заказу бутылей, бутылок воды или газа.'),
+                 (f'Привозите {n} ночью?', 'Да, мы принимаем заказы круглосуточно.')]),
+    }[lang]
+    T['art'] = 'soda'
+    return T
+
+
+for _l in LANGS:
+    for _k in SODAS:
+        P[_l][_k] = _soda(_l, _k)
+
 # İpragaz adı ileride değişirse metinlerde de değişsin
 if GAS != 'İpragaz':
     for _l in P:
@@ -480,3 +566,8 @@ if GAS != 'İpragaz':
             for _f, _v in list(_p.items()):
                 if isinstance(_v, str):
                     _p[_f] = _v.replace('İpragaz', GAS)
+
+# ---------- Müşteri yorumları ----------
+# YALNIZ gerçek yorumlar (Google İşletme Profili vb.). Uydurma yorum EKLENMEZ.
+# Örnek: {'ad': 'Ayşe K.', 'puan': 5, 'metin': '...', 'kaynak': 'Google'}
+REVIEWS = []
