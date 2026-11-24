@@ -14,7 +14,7 @@ from content import (BRAND, BRAND_COLORS, BRAND_NAME, DEFAULT_PRODUCT, GAS, KEYS
 from articles import ARTICLES, DATE  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-VER = '20261124'
+VER = "20261124b"
 I = art.ICONS
 e = html.escape
 OUT = []  # sitemap kayıtları: (url, alternates|None)
@@ -35,6 +35,56 @@ def wa_link(lang, text_tr):
 
 
 WA_HELLO = 'Merhaba Alanyam Ticaret, sipariş vermek istiyorum.'
+
+# ---------------- fotoğraflar (hero hariç; _tools/gorseller.py üretir) ----------------
+PHOTOS = {
+    'alanyam-ticaret-ipragaz-tup-su-bayii-alanya': ((1086, 1448), {
+        'tr': 'Alanyam Ticaret İpragaz tüp ve su bayii dükkânı, Alanya',
+        'en': 'Alanyam Ticaret İpragaz gas and water shop in Alanya',
+        'ru': 'Магазин газа İpragaz и воды Alanyam Ticaret в Аланье'}),
+    'ipragaz-alanya-tup-bayi-vitrin': ((1222, 1287), {
+        'tr': 'İpragaz Alanya tüp bayi vitrini ve sipariş telefonları',
+        'en': 'İpragaz dealer shop window with order phone numbers, Alanya',
+        'ru': 'Витрина дилера İpragaz с телефонами для заказа, Аланья'}),
+    'alanya-su-bayii-aysu-madran-hayat-damacana': ((1268, 1240), {
+        'tr': 'Aysu, Madran ve Hayat damacana ve şişe sular, Alanya su bayii',
+        'en': 'Aysu, Madran and Hayat water jugs and bottles at the Alanya water shop',
+        'ru': 'Бутыли и бутылки воды Aysu, Madran и Hayat в магазине в Аланье'}),
+    'alanya-damacana-su-bayii-ic-mekan': ((1222, 1287), {
+        'tr': 'Alanya damacana su bayii iç mekânı, raflarda 19 litre damacanalar',
+        'en': 'Inside the Alanya water shop: 19-litre jugs on the shelves',
+        'ru': 'Магазин воды в Аланье: бутыли 19 л на полках'}),
+}
+PAGE_PHOTO = {'home': 'alanyam-ticaret-ipragaz-tup-su-bayii-alanya', 'gas': 'ipragaz-alanya-tup-bayi-vitrin',
+              'water': 'alanya-su-bayii-aysu-madran-hayat-damacana', 'aysu': 'alanya-damacana-su-bayii-ic-mekan',
+              'madran': 'alanya-damacana-su-bayii-ic-mekan', 'hayat': 'alanya-damacana-su-bayii-ic-mekan',
+              'contact': 'alanyam-ticaret-ipragaz-tup-su-bayii-alanya'}
+OG_IMG = '/assets/img/alanyam-ticaret-ipragaz-tup-su-bayii-alanya-800.webp'
+
+
+def photo(name, lang, sizes, cls='photo', eager=False):
+    (w0, h0), alts = PHOTOS[name]
+    ws = [w for w in (480, 800, 1200) if w <= w0]
+    av = ', '.join(f'/assets/img/{name}-{w}.avif {w}w' for w in ws)
+    wb = ', '.join(f'/assets/img/{name}-{w}.webp {w}w' for w in ws)
+    d = ws[-1] if ws[-1] <= 800 else 800
+    h = round(h0 * d / w0)
+    load = 'eager' if eager else 'lazy'
+    return (f'<figure class="{cls}"><picture><source type="image/avif" srcset="{av}" sizes="{sizes}">'
+            f'<source type="image/webp" srcset="{wb}" sizes="{sizes}">'
+            f'<img src="/assets/img/{name}-{d}.webp" width="{d}" height="{h}" alt="{e(alts[lang])}" loading="{load}" decoding="async"></picture></figure>')
+
+
+def gallery(lang, first=None):
+    h = {'tr': ('Bizden görüntüler', 'Alanya’daki <span class="hl">tüp ve su bayimiz</span>'),
+         'en': ('Photos', 'Our gas and water shop <span class="hl">in Alanya</span>'),
+         'ru': ('Фото', 'Наш магазин газа и воды <span class="hl">в Аланье</span>')}[lang]
+    names = list(PHOTOS)
+    if first in names:
+        names.remove(first)
+        names.append(first)  # sayfanın kendi fotoğrafı yukarıda zaten var; galeride sona
+    figs = ''.join(photo(n, lang, '(max-width:520px) 100vw, (max-width:1000px) 50vw, 280px', 'photo g-item') for n in names)
+    return f'<section class="sec"><div class="wrap">{sec_head(h[0], h[1], center=True)}<div class="gallery">{figs}</div></div></section>'
 
 
 # ---------------- parçalar ----------------
@@ -61,6 +111,7 @@ def head(lang, title, desc, path, alts=None, schema=None, og_type='website'):
 <meta property="og:type" content="{og_type}"><meta property="og:site_name" content="{NAME}">
 <meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}">
 <meta property="og:url" content="{url}"><meta property="og:locale" content="{UI[lang]['locale']}">
+<meta property="og:image" content="{SITE}{OG_IMG}"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#063246">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -281,7 +332,7 @@ def org_schema(lang):
     return {
         '@context': 'https://schema.org', '@type': 'Store', '@id': SITE + '/#isletme', 'name': NAME,
         'description': UI[lang]['f_about'], 'url': SITE + '/', 'telephone': intl(TEL_GSM),
-        'image': SITE + '/favicon.svg', 'logo': SITE + '/favicon.svg', 'priceRange': '₺',
+        'image': [SITE + f'/assets/img/{n}-800.webp' for n in PHOTOS], 'logo': SITE + '/favicon.svg', 'priceRange': '₺',
         'address': {'@type': 'PostalAddress', 'addressLocality': 'Alanya', 'addressRegion': 'Antalya', 'addressCountry': 'TR'},
         'geo': {'@type': 'GeoCoordinates', 'latitude': 36.5444, 'longitude': 31.9954},
         'areaServed': {'@type': 'City', 'name': 'Alanya', 'sameAs': 'https://www.wikidata.org/wiki/Q212017'},
@@ -372,18 +423,24 @@ def page(lang, key):
     if key != 'contact':
         out.append(steps(lang))
 
-    # Bilgi bölümü
+    # Bilgi bölümü (yanında sayfaya ait fotoğraf)
+    ph = PAGE_PHOTO[key]
     if 'info_h' in pg:
         ps = ''.join(f'<p>{e(x)}</p>' for x in pg['info_p'])
-        ticks = ''.join(f'<li>{e(x)}</li>' for x in pg['info_ticks'])
-        right = ''
+        ticks = f'<ul class="ticks">' + ''.join(f'<li>{e(x)}</li>' for x in pg['info_ticks']) + '</ul>'
+        btn = f'<a class="btn btn-wa" href="#siparis">{I["wa"]} {u["wa_order"]}</a>'
         if 'safety' in pg:
+            left = f'<span class="kicker">{e(pg["info_k"])}</span><h2>{e(pg["info_h"])}</h2>{ps}{ticks}{photo(ph, lang, "(max-width:860px) 100vw, 560px")}'
             right = f'<div class="warn"><h3>⚠ {e(pg["safety_h"])}</h3><ul class="ticks">' + ''.join(f'<li>{e(x)}</li>' for x in pg['safety']) + '</ul></div>'
         else:
-            right = f'<div class="panel"><ul class="ticks">{ticks}</ul><a class="btn btn-wa" href="#siparis">{I["wa"]} {u["wa_order"]}</a></div>'
-            ticks = ''
-        left_ticks = f'<ul class="ticks">{ticks}</ul>' if ticks else ''
-        out.append(f'<section class="sec sec-alt"><div class="wrap split"><div><span class="kicker">{e(pg["info_k"])}</span><h2>{e(pg["info_h"])}</h2>{ps}{left_ticks}</div>{right}</div></section>')
+            left = f'<span class="kicker">{e(pg["info_k"])}</span><h2>{e(pg["info_h"])}</h2>{ps}{ticks}{btn}'
+            right = photo(ph, lang, '(max-width:860px) 100vw, 560px')
+        out.append(f'<section class="sec sec-alt"><div class="wrap split"><div>{left}</div>{right}</div></section>')
+    elif key == 'contact':
+        sh = {'tr': ('Dükkânımız', 'Alanya’daki dükkânımız', 'Tüp ve su siparişlerimizi Alanya’daki dükkânımızdan hazırlıyoruz. Siparişinizi telefonla ya da WhatsApp’tan verin, kapınıza getirelim.'),
+              'en': ('Our shop', 'Our shop in Alanya', 'We prepare gas and water orders at our shop in Alanya. Order by phone or WhatsApp and we’ll bring it to your door.'),
+              'ru': ('Наш магазин', 'Наш магазин в Аланье', 'Заказы газа и воды мы собираем в нашем магазине в Аланье. Закажите по телефону или в WhatsApp — привезём к двери.')}[lang]
+        out.append(f'<section class="sec sec-alt"><div class="wrap split"><div><span class="kicker">{e(sh[0])}</span><h2>{e(sh[1])}</h2><p>{e(sh[2])}</p><a class="btn btn-wa" href="#siparis">{I["wa"]} {u["wa_order"]}</a></div>{photo(ph, lang, "(max-width:860px) 100vw, 560px")}</div></section>')
 
     if key in ('home', 'contact'):
         out.append(why(lang))
@@ -394,6 +451,7 @@ def page(lang, key):
         out.append(brands_strip(lang, exclude=key if key == 'gas' else None))
     if lang == 'tr' and key in ('home', 'water', 'gas', 'aysu', 'madran', 'hayat'):
         out.append(blog_teaser(key))
+    out.append(gallery(lang, first=ph))
     out.append(faq_block(lang, pg['faq']))
     out.append(cta(lang))
     out.append(footer(lang, alts))
@@ -429,7 +487,7 @@ def blog_index():
     out = [head(lang, title, desc, path, None, [org_schema(lang), crumb_schema([('Ana Sayfa', '/'), ('Rehber', path)]), items]),
            header(lang, 'blog', None), hero(lang, pg, crumbs, art.scene('mix', {'gas': GAS, 'brand': 'Aysu'})),
            f'<section class="sec"><div class="wrap">{sec_head("Tüm yazılar", "Rehber yazıları")}<div class="grid g3">' + ''.join(art_card(a) for a in ARTICLES) + '</div></div></section>',
-           steps(lang), order(lang, 'aysu'), cta(lang), footer(lang, None)]
+           steps(lang), order(lang, 'aysu'), gallery(lang), cta(lang), footer(lang, None)]
     write(path, ''.join(out))
     OUT.append((path, None))
 
